@@ -1,0 +1,6 @@
+[lino],[100]
+[kat],[99]
+lino,1000
+skdjkfsfd,10003940234
+dfssdf,1000
+hdsf,567
