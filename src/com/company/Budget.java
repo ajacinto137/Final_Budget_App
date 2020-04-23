@@ -6,16 +6,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.lang.invoke.VarHandle;
 import java.util.ArrayList;
+import java.util.Scanner;
 
+import static com.company.Read_File.fileRead;
 import static com.company.WriteToFile.saveRecord;
 
 
@@ -26,7 +29,7 @@ public class Budget extends Application {
     String[] weeks = {"Week 1", "Week 2", "Week 3", "Week 4"};
     ObservableList<String> categories = FXCollections.observableArrayList();
     ObservableList<String> catPrice = FXCollections.observableArrayList();
-
+    ListView listView = new ListView();
 
     public static void main(String[] args) {
         launch(args);
@@ -42,29 +45,36 @@ public class Budget extends Application {
         TextField catField = new TextField();
         Label label2 = new Label("Price");
         TextField priceField = new TextField();
+        fileRead();
+        Button button1 = new Button("Add");
+        Button nextPage = new Button("Submit");
 
-        Button add = new Button("Add");
+        VBox layout1 = new VBox(20);
+        layout1.getChildren().addAll(label1, catField,label2,priceField,button1,nextPage);
 
-        add.setOnAction(e -> {
-            categories.add(catField.getText());
-            System.out.println(categories);
-        });
-        Button button1 = new Button("Submit");
-        button1.setOnAction(e -> {
+        nextPage.setOnAction(e ->{
             window.setScene(dashScene);
+        });
+
+        button1.setOnAction(e -> {
+//          window.setScene(dashScene);
             catPrice.add(priceField.getText());
             categories.add(catField.getText());
             System.out.println(categories);
-            saveRecord(categories.get(categories.size()-1),catPrice.get(catPrice.size()-1),"cake.txt");
+            listView.getItems().add(catField.getText() + ": " + priceField.getText());
+            saveRecord(categories.get(categories.size()-1),catPrice.get(catPrice.size()-1),"Category_Data.txt");
+            priceField.clear();
+            catField.clear();
         });
 
         //Organize Layout
-        VBox layout1 = new VBox(20);
-        layout1.getChildren().addAll(label1, catField,add,label2,priceField,button1);
+
+        HBox hBox = new HBox(20);
+        hBox.getChildren().addAll(layout1,listView);
         layout1.setPadding(new Insets(20));
 
         //Assemble Layout into scene
-        setupScene = new Scene(layout1);
+        setupScene = new Scene(hBox);
 
         // End Set Up Scene
 
@@ -76,6 +86,8 @@ public class Budget extends Application {
         Label week = new Label("Week");
         ComboBox<String> chosenWeek = new ComboBox<String>();
         chosenWeek.getItems().addAll(weeks);
+
+        Label day = new Label("Katrina is anooying");
 
         //Choose Category
         Label category = new Label("Category");
@@ -108,5 +120,22 @@ public class Budget extends Application {
         window.setTitle("Title");
         window.show();
 
+    }
+    public void fileRead(){
+        String fileName = "Category_Data.txt";
+        File file = new File(fileName);
+        try{
+            Scanner inputStream = new Scanner(file);
+            while(inputStream.hasNext()){
+                String data = inputStream.next();
+                String[] values = data.split(",");
+                System.out.println(values[1]);
+                listView.getItems().add(values[0] + ":" + values[1]);
+                categories.add(values[0]);
+            }
+            inputStream.close();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
     }
 }

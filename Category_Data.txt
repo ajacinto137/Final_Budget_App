@@ -1,0 +1,6 @@
+Rent,100
+Cable,100
+Wifi,34
+Food,300
+Misc,300
+test,9999
