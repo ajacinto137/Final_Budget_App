@@ -27,4 +27,25 @@ public class WriteToFile {
         }
 
     }
+    public static void saveRecord(int week, String Category, String Price,String filepath){
+
+        try{
+
+            FileWriter fw = new FileWriter(filepath,true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+            pw.println(week + "," + Category + "," + Price);
+            pw.flush();
+            pw.close();
+            System.out.println("Record Saved");
+        }
+
+        catch(Exception e)
+        {
+            System.out.println("Catch");
+        }
+
+    }
+
+
 }
