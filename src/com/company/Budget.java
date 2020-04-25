@@ -108,8 +108,22 @@ public class Budget extends Application {
         //Dash Scene Org and Assembly
         Label transPriceLabel = new Label("Price");
         TextField transPriceField = new TextField();
+
+
+        Button submitTransaction = new Button("Submit Transaction");
+
+        submitTransaction.setOnAction(e ->{
+            transWeek.add(chosenWeek.getValue());
+            transCat.add(chosenCategory.getValue());
+            transPrice.add(transPriceField.getText());
+            saveRecord(transWeek.get(transWeek.size()-1),transCat.get(transCat.size()-1), transPrice.get(transPrice.size()-1),"TransactionData.txt");
+            transPriceField.clear();
+            chosenCategory.setValue(null);
+            chosenWeek.setValue(null);
+        });
+
         VBox layout2 = new VBox();
-        layout2.getChildren().addAll(addAddTransaction,weekLabel,chosenWeek, categoryLabel,chosenCategory,button2,transPriceLabel,transPriceField);
+        layout2.getChildren().addAll(addAddTransaction,weekLabel,chosenWeek, categoryLabel,chosenCategory,button2,transPriceLabel,transPriceField, submitTransaction);
         dashScene = new Scene(layout2,400,400);
 
 

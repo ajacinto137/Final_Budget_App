@@ -27,7 +27,7 @@ public class WriteToFile {
         }
 
     }
-    public static void saveRecord(int week, String Category, String Price,String filepath){
+    public static void saveRecord(String week, String Category, String Price,String filepath){
 
         try{
 
