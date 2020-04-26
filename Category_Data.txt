@@ -1,3 +1,6 @@
 Rent,100
 Cable,600
 Electric,50
+Wifi,34
+Food,300
+Misc,300

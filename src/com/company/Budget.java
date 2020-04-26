@@ -1,6 +1,5 @@
 package com.company;
 import javafx.application.Application;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -9,9 +8,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import static com.company.WriteToFile.saveRecord;
 
@@ -27,7 +27,56 @@ public class Budget extends Application {
     ObservableList<String> transCat = FXCollections.observableArrayList();
     ObservableList<String> transPrice = FXCollections.observableArrayList();
     ObservableList<String> transaction = FXCollections.observableArrayList();
+    ArrayList<Transaction> transactionsArray = new ArrayList<>();
     ListView listView = new ListView();
+
+    public void fileRead(){
+        String fileName = "Category_Data.txt";
+        File file = new File(fileName);
+        try{
+            Scanner inputStream = new Scanner(file);
+            while(inputStream.hasNext()){
+                String data = inputStream.next();
+                String[] values = data.split(",");
+                listView.getItems().add(values[0] + ": " + values[1]);
+                categories.add(values[0]);
+            }
+            inputStream.close();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void fileReadTrans(){
+        String fileName = "TransactionData.txt";
+        File file = new File(fileName);
+        try{
+            Scanner inputStream = new Scanner(file);
+            while(inputStream.hasNext()){
+                String data = inputStream.next();
+                String[] values = data.split(",");
+                Transaction newTransAction = new Transaction(Integer.parseInt(values[0]), values[1],Double.parseDouble(values[2]));
+                transactionsArray.add(newTransAction);
+                transaction.add(values[0] + values[1] + values[2]);
+            }
+            for (int i = 0; i < transactionsArray.size(); i++){
+                System.out.println(transactionsArray.get(i));
+            }
+            inputStream.close();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void getTransactionByWeek(int x){
+        int count = 0;
+        for (int i = 0; i < transactionsArray.size(); i++)
+            if (transactionsArray.get(i).week == x) {
+                System.out.println(transactionsArray.get(i));
+                count++;
+            }
+        System.out.println("There are " + count + " transactions in week " + x );
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -49,12 +98,19 @@ public class Budget extends Application {
         // Add Category to ListView
         Button button1 = new Button("Add");
         button1.setOnAction(e -> {
-            catPrice.add(priceField.getText());
-            categories.add(catField.getText());
-            listView.getItems().add(catField.getText() + ": " + priceField.getText());
-            saveRecord(categories.get(categories.size()-1),catPrice.get(catPrice.size()-1),"Category_Data.txt");
-            priceField.clear();
-            catField.clear();
+            if (catField.getText().isEmpty() || priceField.getText().isEmpty()){
+                priceField.clear();
+                catField.clear();
+                JOptionPane.showMessageDialog(null, "You need to add more");
+            }
+            else {
+                catPrice.add(priceField.getText());
+                categories.add(catField.getText());
+                listView.getItems().add(catField.getText() + ": " + priceField.getText());
+                saveRecord(categories.get(categories.size()-1),catPrice.get(catPrice.size()-1),"Category_Data.txt");
+                priceField.clear();
+                catField.clear();
+            }
         });
 
 
@@ -114,67 +170,51 @@ public class Budget extends Application {
         Button submitTransaction = new Button("Submit Transaction");
 
         submitTransaction.setOnAction(e ->{
-            transWeek.add(chosenWeek.getValue());
-            transCat.add(chosenCategory.getValue());
-            transPrice.add(transPriceField.getText());
-            saveRecord(transWeek.get(transWeek.size()-1),transCat.get(transCat.size()-1), transPrice.get(transPrice.size()-1),"TransactionData.txt");
-            transPriceField.clear();
-            chosenCategory.setValue(null);
-            chosenWeek.setValue(null);
+            if (transPriceField.getText().isEmpty() || chosenCategory.getValue().isEmpty() || chosenWeek.getValue().isEmpty()){
+                transPriceField.clear();
+                chosenCategory.setValue(null);
+                chosenWeek.setValue(null);
+                JOptionPane.showMessageDialog(null, "You need to add more");
+            }
+            else{
+                transactionsArray.clear();
+                transWeek.add(chosenWeek.getValue());
+                transCat.add(chosenCategory.getValue());
+                transPrice.add(transPriceField.getText());
+                saveRecord(transWeek.get(transWeek.size()-1),transCat.get(transCat.size()-1), transPrice.get(transPrice.size()-1),"TransactionData.txt");
+                transPriceField.clear();
+                chosenCategory.setValue(null);
+                chosenWeek.setValue(null);
+//            fileReadTrans();
+            }
+
         });
 
         Button readTransaction = new Button("Read Transaction");
         readTransaction.setOnAction(e->{
             fileReadTrans();
+            System.out.println(transactionsArray.size());
+        });
+
+        Button getTransactionByWeek = new Button("Get Transaction By Week");
+        getTransactionByWeek.setOnAction(e->{
+            getTransactionByWeek(2);
         });
 
 
         VBox layout2 = new VBox();
-        layout2.getChildren().addAll(addAddTransaction,weekLabel,chosenWeek, categoryLabel,chosenCategory,transPriceLabel,transPriceField, submitTransaction,button2,readTransaction);
+        layout2.getChildren().addAll(addAddTransaction,weekLabel,chosenWeek, categoryLabel,chosenCategory,transPriceLabel,
+                transPriceField, submitTransaction,readTransaction,getTransactionByWeek,button2);
         dashScene = new Scene(layout2,400,400);
 
 
         //Dash Scene Org and Assembly
+        fileReadTrans();
         window.setScene(setupScene);
         window.setTitle("Title");
         window.show();
 
     }
 
-    public void fileRead(){
-        String fileName = "Category_Data.txt";
-        File file = new File(fileName);
-        try{
-            Scanner inputStream = new Scanner(file);
-            while(inputStream.hasNext()){
-                String data = inputStream.next();
-                String[] values = data.split(",");
-                listView.getItems().add(values[0] + ": " + values[1]);
-                categories.add(values[0]);
-            }
-            inputStream.close();
-        }catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void fileReadTrans(){
-        String fileName = "TransactionData.txt";
-        File file = new File(fileName);
-        try{
-            Scanner inputStream = new Scanner(file);
-            while(inputStream.hasNext()){
-                String data = inputStream.next();
-                String[] values = data.split(",");
-                transaction.add(values[0] + values[1] + values[2]);
-            }
-            for (int i = 0; i < transaction.size(); i++){
-                System.out.println(transaction.get(i));
-            }
-            inputStream.close();
-        }catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
-    }
 }
 //test

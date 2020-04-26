@@ -39,7 +39,7 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction " + count + " { "+
+        return "Transaction{" +
                 "week=" + week +
                 ", category='" + category + '\'' +
                 ", price=" + price +
