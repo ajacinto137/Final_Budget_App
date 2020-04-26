@@ -4,4 +4,4 @@ wifi,34
 Phone,100
 Food,300
 Misc,300
-Gas,128
+Gas,12823
