@@ -1,3 +1,5 @@
-Week 4,test,456456
-Week 2,ewrwer,234234
-Week 3,test,ewr234234234
+3,Rent,1200
+3,Electric,2313123
+1,Cable,678
+2,Cable,234567890000
+2,Cable,2345674443

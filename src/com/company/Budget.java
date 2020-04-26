@@ -1,5 +1,6 @@
 package com.company;
 import javafx.application.Application;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -19,12 +20,13 @@ public class Budget extends Application {
 
     Stage window;
     Scene setupScene, dashScene, transactionScene;
-    String[] weeks = {"Week 1", "Week 2", "Week 3", "Week 4"};
+    String[] weeks = {"1", "2", "3", "4"};
     ObservableList<String> categories = FXCollections.observableArrayList();
     ObservableList<String> catPrice = FXCollections.observableArrayList();
     ObservableList<String> transWeek = FXCollections.observableArrayList();
     ObservableList<String> transCat = FXCollections.observableArrayList();
     ObservableList<String> transPrice = FXCollections.observableArrayList();
+    ObservableList<String> transaction = FXCollections.observableArrayList();
     ListView listView = new ListView();
 
     public static void main(String[] args) {
@@ -49,7 +51,6 @@ public class Budget extends Application {
         button1.setOnAction(e -> {
             catPrice.add(priceField.getText());
             categories.add(catField.getText());
-            System.out.println(categories);
             listView.getItems().add(catField.getText() + ": " + priceField.getText());
             saveRecord(categories.get(categories.size()-1),catPrice.get(catPrice.size()-1),"Category_Data.txt");
             priceField.clear();
@@ -101,7 +102,7 @@ public class Budget extends Application {
 
 
         // Submission Button
-        Button button2 = new Button("button");
+        Button button2 = new Button("Go back");
         button2.setOnAction(e -> window.setScene(setupScene));
 
 
@@ -122,8 +123,14 @@ public class Budget extends Application {
             chosenWeek.setValue(null);
         });
 
+        Button readTransaction = new Button("Read Transaction");
+        readTransaction.setOnAction(e->{
+            fileReadTrans();
+        });
+
+
         VBox layout2 = new VBox();
-        layout2.getChildren().addAll(addAddTransaction,weekLabel,chosenWeek, categoryLabel,chosenCategory,button2,transPriceLabel,transPriceField, submitTransaction);
+        layout2.getChildren().addAll(addAddTransaction,weekLabel,chosenWeek, categoryLabel,chosenCategory,transPriceLabel,transPriceField, submitTransaction,button2,readTransaction);
         dashScene = new Scene(layout2,400,400);
 
 
@@ -142,9 +149,27 @@ public class Budget extends Application {
             while(inputStream.hasNext()){
                 String data = inputStream.next();
                 String[] values = data.split(",");
-                System.out.println(values[1]);
                 listView.getItems().add(values[0] + ": " + values[1]);
                 categories.add(values[0]);
+            }
+            inputStream.close();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void fileReadTrans(){
+        String fileName = "TransactionData.txt";
+        File file = new File(fileName);
+        try{
+            Scanner inputStream = new Scanner(file);
+            while(inputStream.hasNext()){
+                String data = inputStream.next();
+                String[] values = data.split(",");
+                transaction.add(values[0] + values[1] + values[2]);
+            }
+            for (int i = 0; i < transaction.size(); i++){
+                System.out.println(transaction.get(i));
             }
             inputStream.close();
         }catch(FileNotFoundException e){
