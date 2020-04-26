@@ -1,6 +1,7 @@
-Rent,100
-Cable,600
-Electric,50
-Wifi,34
+Rent,877
+Electricity,50
+wifi,34
+Phone,100
 Food,300
 Misc,300
+Gas,128

@@ -16,4 +16,9 @@
 2,Electric,76543
 3,Electric,87654
 2,Food,9876543
-
+2,Electricity,300
+2,Misc,333
+2,Rent,876797987
+2,Gas,32
+3,Rent,2132
+4,Electricity,31321

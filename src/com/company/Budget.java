@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -113,10 +114,9 @@ public class Budget extends Application {
             }
         });
 
-
         //Button to go to next page
-        Button testingAButton = new Button("Testing");
-        testingAButton.setOnAction(e ->{
+        Button goToDash = new Button("Go to Dash");
+        goToDash.setOnAction(e ->{
             window.setScene(dashScene);
         });
 
@@ -124,7 +124,7 @@ public class Budget extends Application {
 
         //Lay Out for categoryLabel scene
         VBox layout1 = new VBox(20);
-        layout1.getChildren().addAll(addACategory, catField, priceLabel,priceField,button1,testingAButton);
+        layout1.getChildren().addAll(addACategory, catField, priceLabel,priceField,button1,goToDash);
         //Container for layour
         HBox hBox = new HBox(20);
         hBox.getChildren().addAll(layout1,listView);
@@ -185,16 +185,17 @@ public class Budget extends Application {
                 transPriceField.clear();
                 chosenCategory.setValue(null);
                 chosenWeek.setValue(null);
-//            fileReadTrans();
+                fileReadTrans();
+                System.out.println(transactionsArray.size());
             }
 
         });
 
-        Button readTransaction = new Button("Read Transaction");
-        readTransaction.setOnAction(e->{
-            fileReadTrans();
-            System.out.println(transactionsArray.size());
-        });
+//        Button readTransaction = new Button("Read Transaction");
+//        readTransaction.setOnAction(e->{
+//            fileReadTrans();
+//            System.out.println(transactionsArray.size());
+//        });
 
         Button getTransactionByWeek = new Button("Get Transaction By Week");
         getTransactionByWeek.setOnAction(e->{
@@ -202,9 +203,11 @@ public class Budget extends Application {
         });
 
 
-        VBox layout2 = new VBox();
+        VBox layout2 = new VBox(20);
         layout2.getChildren().addAll(addAddTransaction,weekLabel,chosenWeek, categoryLabel,chosenCategory,transPriceLabel,
-                transPriceField, submitTransaction,readTransaction,getTransactionByWeek,button2);
+                transPriceField, submitTransaction,getTransactionByWeek,button2);
+        layout2.setPadding(new Insets(20));
+        layout2.setAlignment(Pos.CENTER);
         dashScene = new Scene(layout2,400,400);
 
 
@@ -217,4 +220,3 @@ public class Budget extends Application {
     }
 
 }
-//test
