@@ -1,26 +1,24 @@
 package com.company;
 
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javax.swing.*;
 
 import static com.company.WriteToFile.saveRecord;
 
-public class DashScene extends Budget {
+public class TransScene extends Budget {
 
-    public Scene createDashScene(){
+    public Scene createTransScene(){
         fileRead();
         Label addAddTransaction = new Label("Add a transaction");
         Label weekLabel = new Label("Week");
         ComboBox<String> chosenWeek = new ComboBox<String>();
         chosenWeek.getItems().addAll(weeks);
+        ListView listViewDash = new ListView();
 
         //Choose Category
         Label categoryLabel = new Label("Category");
@@ -62,6 +60,9 @@ public class DashScene extends Budget {
                 chosenCategory.setValue(null);
                 chosenWeek.setValue(null);
                 fileReadTrans();
+                for (int i = 0; i < transactionsArray.size(); i++){
+                    listViewDash.getItems().add(transactionsArray.get(i));
+                }
                 System.out.println(transactionsArray.size());
             }
 
@@ -76,9 +77,13 @@ public class DashScene extends Budget {
         VBox layout2 = new VBox(20);
         layout2.getChildren().addAll(addAddTransaction,weekLabel,chosenWeek, categoryLabel,chosenCategory,transPriceLabel,
                 transPriceField, submitTransaction,getTransactionByWeek,button2);
+
         layout2.setPadding(new Insets(20));
-        layout2.setAlignment(Pos.CENTER);
-        dashScene = new Scene(layout2,400,400);
-        return dashScene;
+
+
+        HBox hBox = new HBox(20);
+        hBox.getChildren().addAll(layout2, listViewDash);
+        transScene = new Scene(hBox,400,400);
+        return transScene;
     }
 }
