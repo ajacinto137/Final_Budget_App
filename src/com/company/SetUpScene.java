@@ -2,9 +2,7 @@ package com.company;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -21,6 +19,8 @@ public class SetUpScene extends Budget{
         Label priceLabel = new Label("Price");
         TextField priceField = new TextField();
         Label transactionLabel = new Label("Transaction Page");
+        RadioButton isWeeklyExpenses = new RadioButton("Yes");
+        RadioButton isNotAweeklyExpense = new RadioButton("No");
         fileRead();
 
         // Add Category to ListView
@@ -36,6 +36,19 @@ public class SetUpScene extends Budget{
                 categories.add(catField.getText());
                 CatlistView.getItems().add(catField.getText() + ": " + priceField.getText());
                 saveRecord(categories.get(categories.size()-1),catPrice.get(catPrice.size()-1),"Category_Data.txt");
+
+                if (isNotAweeklyExpense.isSelected()){
+                    Category newCatagory = new Category(catField.getText(),Double.parseDouble(priceField.getText()),false);
+                    saveRecord(newCatagory.name,newCatagory.price,newCatagory.weeklyBudget,"ObjCatFile.txt");
+                    categoriesObjs.add(newCatagory);
+
+                }
+                if (isWeeklyExpenses.isSelected()){
+                    Category newCatagory = new Category(catField.getText(),Double.parseDouble(priceField.getText()),true);
+                    saveRecord(newCatagory.name,newCatagory.price,newCatagory.weeklyBudget,"ObjCatFile.txt");
+                    categoriesObjs.add(newCatagory);
+                }
+
                 priceField.clear();
                 catField.clear();
             }
@@ -58,7 +71,7 @@ public class SetUpScene extends Budget{
 
         //Lay Out for categoryLabel scene
         VBox layout1 = new VBox(20);
-        layout1.getChildren().addAll(addACategory, catField, priceLabel,priceField,button1, goToAddATrans,gotToDash);
+        layout1.getChildren().addAll(addACategory, catField, priceLabel,priceField,isWeeklyExpenses,isNotAweeklyExpense,button1, goToAddATrans,gotToDash);
         //Container for layour
         HBox hBox = new HBox(20);
         hBox.getChildren().addAll(layout1, CatlistView);

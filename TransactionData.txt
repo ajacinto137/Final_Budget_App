@@ -30,3 +30,4 @@
 2,wifi,10
 3,Electricity,10
 1,Food,30
+2,Electricity,55
