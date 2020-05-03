@@ -1,6 +1,5 @@
 package com.company;
 
-import javafx.scene.LightBase;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -8,6 +7,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
 
 
 public class Controllers extends Budget {
@@ -100,8 +100,9 @@ public class Controllers extends Budget {
             Label categoryAndTotal = new Label(categoriesObjs.get(i).name + ": " + total);
             Label diferenceLabel = new Label(diference);
             Label percentage = new Label(percentUsedFormatted);
-            gridPane.add(totalCategoryPrice,0,i+1);
-            gridPane.add(categoryAndTotal,1,i+1);
+
+            gridPane.add(categoryAndTotal,0,i+1);
+            gridPane.add(totalCategoryPrice,1,i+1);
             gridPane.add(diferenceLabel,2,i+1);
             gridPane.add(percentage,3,i+1);
         }
@@ -110,12 +111,59 @@ public class Controllers extends Budget {
         return gridPane;
     }
 
+
+
+    public VBox testWeeklyBudget(ArrayList<Category> categoriesObjs){
+        VBox vBox = new VBox();
+        int count = 0;
+        sortTransByWeek(weeks,transactionsArray);
+        System.out.println("The size is" + week1Transaction.size());
+        System.out.println(categoriesObjs.size());
+        for (int i = 0; i < categoriesObjs.size(); i++) {
+            if (categoriesObjs.get(i).weeklyBudget == true){
+                count++;
+                GridPane gridPane = new GridPane();
+                gridPane.setVgap(10);
+                gridPane.setHgap(25);
+                System.out.println("IN if");
+
+                for (int k = 0; k < count; k++) {
+
+
+                    double total = keywordSumation(categoriesObjs.get(i).name,week1Transaction);
+                    double CategoryPrice = categoriesObjs.get(i).price;
+                    double percentUsed = (total/CategoryPrice)*100;
+                    String percentUsedFormatted = String.format("%.2f", percentUsed);
+                    String diference = String.valueOf(CategoryPrice-total);
+                    Label totalCategoryPrice = new Label(String.valueOf(CategoryPrice));
+                    Label categoryAndTotal = new Label(categoriesObjs.get(i).name + ": " + total);
+                    Label diferenceLabel = new Label(diference);
+                    Label percentage = new Label(percentUsedFormatted);
+
+                    gridPane.add(categoryAndTotal,0,k);
+                    gridPane.add(totalCategoryPrice,1,k);
+                    gridPane.add(diferenceLabel,2,k);
+                    gridPane.add(percentage,3,k);
+                }
+                vBox.getChildren().add(gridPane);
+            }
+        }
+        return vBox;
+    }
+
     public Button test(){
         Button goToAddATrans = new Button("testObjects");
         goToAddATrans.setOnAction(e ->{
-            fileReadTrans();
             fileReadCat();
-            keywordSumation("Rent",transactionsArray);
+            fileReadTrans();
+            System.out.println("Blahhhhhhh");
+            System.out.println(week1Transaction.size());
+            sortTransByWeek(weeks,transactionsArray);
+            System.out.println("Yoooooooooooooooooooooooooo");
+            System.out.println(week1Transaction.size());
+
+//            addWeeklyBudget(week2Transaction,categoriesObjs);
+
         });
         return goToAddATrans;
     }
