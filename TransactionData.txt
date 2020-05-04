@@ -1,4 +1,4 @@
-4,Cable,10
+4,Cable,11
 3,Rent,10
 2,Cable,10
 2,Cable,10
@@ -15,7 +15,6 @@
 2,Food,10
 2,Electric,10
 3,Electric,10
-2,Food,10
 2,Electricity,10
 2,Misc,10
 2,Rent,10
@@ -24,10 +23,3 @@
 4,Electricity,10
 4,wifi,10
 4,Electricity,10
-3,wifi,10
-2,wifi,10
-3,Phone,10
-2,wifi,10
-3,Electricity,10
-1,Food,30
-2,Electricity,55

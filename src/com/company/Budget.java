@@ -31,11 +31,21 @@ public class Budget extends Application {
     ListView CatlistView = new ListView();
     ListView TransListView = new ListView();
     ArrayList<ArrayList<Transaction>> weeklyTransactions = new ArrayList<ArrayList<Transaction>>();
-    ArrayList<Transaction> week1Transaction = new ArrayList<>();
-    ArrayList<Transaction> week2Transaction = new ArrayList<>();
-    ArrayList<Transaction> week3Transaction = new ArrayList<>();
-    ArrayList<Transaction> week4Transaction = new ArrayList<>();
+    static ArrayList<Transaction> week1Transaction = new ArrayList<>();
+    static ArrayList<Transaction> week2Transaction = new ArrayList<>();
+    static ArrayList<Transaction> week3Transaction = new ArrayList<>();
+    static ArrayList<Transaction> week4Transaction = new ArrayList<>();
 
+    public void sortIntoWeekly(){
+        fileReadTrans();
+        for (int i = 0; i < transactionsArray.size() ; i++) {
+
+            if(transactionsArray.get(i).week == 1){
+                week1Transaction.add(transactionsArray.get(i));
+            }
+
+        }
+    }
 
 
     //Put transactions into list view

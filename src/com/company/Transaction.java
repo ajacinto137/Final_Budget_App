@@ -39,11 +39,9 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" +
-                "week=" + week +
-                ", category='" + category + '\'' +
-                ", price=" + price +
-                '}';
+        return  "Week:" + week +
+                ", Category:'" + category + '\'' +
+                ", Price:" + price;
     }
 
     public static void main(String[] args) {

@@ -4,7 +4,7 @@ wifi,34,False
 Phone,100,False
 Food,300,True
 Misc,300,True
-Gas,12823,True
+Gas,80,True
 
 
 

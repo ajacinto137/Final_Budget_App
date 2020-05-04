@@ -18,13 +18,12 @@ public class SetUpScene extends Budget{
         TextField catField = new TextField();
         Label priceLabel = new Label("Price");
         TextField priceField = new TextField();
-        Label transactionLabel = new Label("Transaction Page");
         RadioButton isWeeklyExpenses = new RadioButton("Yes");
         RadioButton isNotAweeklyExpense = new RadioButton("No");
         fileRead();
 
         // Add Category to ListView
-        Button button1 = new Button("Add");
+        Button button1 = new Button("Add Category");
         button1.setOnAction(e -> {
             if (catField.getText().isEmpty() || priceField.getText().isEmpty()){
                 priceField.clear();
@@ -55,14 +54,14 @@ public class SetUpScene extends Budget{
         });
 
         //Button to go to next page
-        Button goToAddATrans = new Button("Add Transactions");
+        Button goToAddATrans = new Button("Transactions Page");
         goToAddATrans.setOnAction(e ->{
             TransScene createTransScene = new TransScene();
             transScene = createTransScene.createTransScene();
             window.setScene(transScene);
         });
 
-        Button gotToDash = new Button("Go to Dash Scene");
+        Button gotToDash = new Button("Dashboard");
         gotToDash.setOnAction(e-> {
             Dashboard dashboard = new Dashboard();
             dashScene = dashboard.createDashScene();
@@ -70,8 +69,11 @@ public class SetUpScene extends Budget{
         });
 
         //Lay Out for categoryLabel scene
+        HBox radioButtons = new HBox(10);
+        radioButtons.getChildren().addAll(isWeeklyExpenses,isNotAweeklyExpense);
+        Label radioButtonLabel = new Label("Weekly Expense?");
         VBox layout1 = new VBox(20);
-        layout1.getChildren().addAll(addACategory, catField, priceLabel,priceField,isWeeklyExpenses,isNotAweeklyExpense,button1, goToAddATrans,gotToDash);
+        layout1.getChildren().addAll(addACategory, catField, priceLabel,priceField,radioButtonLabel,radioButtons,button1, goToAddATrans,gotToDash);
         //Container for layour
         HBox hBox = new HBox(20);
         hBox.getChildren().addAll(layout1, CatlistView);

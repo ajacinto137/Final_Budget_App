@@ -19,6 +19,7 @@ public class TransScene extends Budget {
         ComboBox<String> chosenWeek = new ComboBox<String>();
         chosenWeek.getItems().addAll(weeks);
         ListView listViewDash = new ListView();
+        listViewDash.setPrefWidth(400);
 
         //Choose Category
         Label categoryLabel = new Label("Category");
@@ -27,7 +28,7 @@ public class TransScene extends Budget {
 
 
         // Submission Button
-        Button button2 = new Button("Go back");
+        Button button2 = new Button("Category Page");
         button2.setOnAction(e -> {
 
             SetUpScene createSetUpScene = new SetUpScene();
@@ -55,14 +56,20 @@ public class TransScene extends Budget {
                 transWeek.add(chosenWeek.getValue());
                 transCat.add(chosenCategory.getValue());
                 transPrice.add(transPriceField.getText());
+                TransListView.getItems().clear();
+                fileReadTrans();
+                getTransactionByWeek(Integer.parseInt(chosenWeek.getValue()));
+                for (int i = 0; i  < chosenTransactions.size(); i++){
+                    listViewDash.getItems().addAll(chosenTransactions.get(i));
+                }
                 saveRecord(transWeek.get(transWeek.size()-1),transCat.get(transCat.size()-1), transPrice.get(transPrice.size()-1),"TransactionData.txt");
                 transPriceField.clear();
                 chosenCategory.setValue(null);
                 chosenWeek.setValue(null);
                 fileReadTrans();
-                for (int i = 0; i < transactionsArray.size(); i++){
-                    listViewDash.getItems().add(transactionsArray.get(i));
-                }
+//                for (int i = 0; i < transactionsArray.size(); i++){
+//                    listViewDash.getItems().add(transactionsArray.get(i));
+//                }
                 System.out.println(transactionsArray.size());
             }
 
@@ -73,17 +80,19 @@ public class TransScene extends Budget {
             getTransactionByWeek(2);
         });
 
+        Controllers cntrlr = new Controllers();
 
         VBox layout2 = new VBox(20);
         layout2.getChildren().addAll(addAddTransaction,weekLabel,chosenWeek, categoryLabel,chosenCategory,transPriceLabel,
-                transPriceField, submitTransaction,getTransactionByWeek,button2);
+                transPriceField, submitTransaction,button2,cntrlr.getGotToDashButton());
 
         layout2.setPadding(new Insets(20));
 
 
         HBox hBox = new HBox(20);
         hBox.getChildren().addAll(layout2, listViewDash);
-        transScene = new Scene(hBox,400,400);
+//        hBox.setPrefWidth(500);
+        transScene = new Scene(hBox);
         return transScene;
     }
 }
